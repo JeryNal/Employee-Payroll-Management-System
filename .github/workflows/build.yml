@@ -1,0 +1,39 @@
+name: Build Employee Payroll System
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Download MASM32
+      run: |
+        $url = "https://github.com/masm32/masm32/releases/download/v11.0/masm32v11.0.zip"
+        $output = "masm32.zip"
+        Invoke-WebRequest -Uri $url -OutFile $output
+        Expand-Archive -Path $output -DestinationPath "D:\" -Force
+        
+    - name: Set up MASM32 environment
+      run: |
+        $env:MASM32_PATH = "D:\masm32"
+        $env:INCLUDE = "D:\masm32\include"
+        $env:LIB = "D:\masm32\lib"
+        $env:PATH = "D:\masm32\bin;$env:PATH"
+        
+    - name: Build project
+      run: |
+        cd bin
+        .\build_admin.ps1
+        
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: payroll-system
+        path: bin/payroll.exe 
