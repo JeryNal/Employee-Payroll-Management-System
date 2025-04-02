@@ -1,0 +1,22 @@
+# Compiled files
+*.exe
+*.obj
+*.lst
+*.map
+
+# Build output
+bin/*.exe
+bin/*.obj
+
+# IDE files
+.vscode/
+*.user
+*.suo
+*.dbmdl
+*.dbproj.schemaview
+*.pfx
+*.publishsettings
+
+# OS files
+.DS_Store
+Thumbs.db 
